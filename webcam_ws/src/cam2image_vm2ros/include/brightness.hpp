@@ -21,12 +21,9 @@ class Brightness : public rclcpp::Node
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr light_pub_;
 
-        float brightness;
         size_t brightness_threshold;
         bool is_light_on;
         size_t depth_;
-        std::string input_topic_;
-        std::string output_topic_;
 };
 
 #endif

@@ -36,7 +36,9 @@ void Brightness::avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg)
         }
     }
 
-    brightness = rgb_tot / (image.rows * image.cols);
+    float brightness = rgb_tot / (image.rows * image.cols);
+    // Added get parameter to ensure latest value brightness threshold value is used
+    brightness_threshold = this->get_parameter("brightness_threshold").as_int();
     if (brightness > brightness_threshold)
     {
         is_light_on = true;
@@ -50,15 +52,10 @@ void Brightness::avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg)
     std_msgs::msg::Bool light_msg;
     light_msg.data = is_light_on;
     light_pub_->publish(light_msg);
-    //light_pub_->publish(std::make_shared<std_msgs::msg::Bool>(is_light_on)); // pointer?
 }
 
 void Brightness::parse_parameters()
 {   
-    brightness = this->declare_parameter("brightness", 0.0);
     brightness_threshold = this->declare_parameter("brightness_threshold", 100);
-    is_light_on = this->declare_parameter("is_light_on", false);
-    input_topic_ = this->declare_parameter("input_topic", "image");
-    output_topic_ = this->declare_parameter("output_topic", "light");
     depth_ = this->declare_parameter("depth", 10);
 }

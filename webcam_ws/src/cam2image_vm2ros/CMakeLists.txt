@@ -22,6 +22,7 @@ find_package(OpenCV REQUIRED COMPONENTS core highgui imgcodecs imgproc videoio)
 add_library(${PROJECT_NAME} SHARED
   src/remote_capture.cpp
   src/cam2image.cpp
+  src/brightness.cpp # Added for brightness node - assignment 1.1.2
 )
 target_compile_definitions(${PROJECT_NAME}
   PRIVATE "IMAGE_TOOLS_BUILDING_DLL")
@@ -37,6 +38,7 @@ target_link_libraries(${PROJECT_NAME}
   cv_bridge::cv_bridge  # Link cv_bridge  
   )
 rclcpp_components_register_node(${PROJECT_NAME} PLUGIN "cam2image_vm2ros::Cam2Image" EXECUTABLE cam2image)
+rclcpp_components_register_node(${PROJECT_NAME} PLUGIN "Brightness" EXECUTABLE brightness) # Added for brightness node - assignment 1.1.2
 
 install(
   TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}

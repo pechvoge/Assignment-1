@@ -3,7 +3,9 @@
 
 #include "std_msgs/msg/bool.hpp"
 #include "sensor_msgs/msg/image.hpp"
-
+#include "sensor_msgs/image_encodings.hpp"
+#include "cv_bridge/cv_bridge.hpp"
+#include "opencv2/core/mat.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 class Brightness : public rclcpp::Node
@@ -13,8 +15,10 @@ class Brightness : public rclcpp::Node
 
     private:
         void initialize();
+        void avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg);
+        void parse_parameters();
 
-        rclcpp::Subscription<std_msgs::msg::Image>::SharedPtr image_sub_;
+        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
         rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr light_pub_;
 
         float brightness;
@@ -23,6 +27,9 @@ class Brightness : public rclcpp::Node
         size_t depth_;
         std::string input_topic_;
         std::string output_topic_;
-}
+};
 
 #endif
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(Brightness)

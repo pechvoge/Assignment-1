@@ -29,6 +29,7 @@ class Sequence_generator_node : public rclcpp::Node
         
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
         rclcpp::TimerBase::SharedPtr pub_timer_;
+        rclcpp::TimerBase::SharedPtr compute_timer_;
 
         geometry_msgs::msg::Point desired_point;
         const geometry_msgs::msg::Point::SharedPtr desired_point_pointer = std::make_shared<geometry_msgs::msg::Point>(desired_point); 

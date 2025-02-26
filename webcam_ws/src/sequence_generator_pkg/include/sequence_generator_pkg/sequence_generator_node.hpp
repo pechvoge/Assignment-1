@@ -3,6 +3,8 @@
 
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/point.hpp"
+#include "geometry_msgs/msg/point_stamped.hpp"
+#include "geometry_msgs/msg/pose_stamped.hpp"
 #include <chrono>
 #include <array>
 #include <vector>
@@ -19,15 +21,18 @@ class Sequence_generator_node : public rclcpp::Node
         void parse_parameters();
         void absolute(float &delta_x);
         float power(float base, float exponent);
-        std::array<float,2> desiredPose();
+        void desiredPose();
         std::array<float,4> getCoefficients(float final_time, float ini_q, float final_q);
         void Sequence_generator();
         void publisherCallback();       
-
+        void updateCameraCoords(const geometry_msgs::msg::PointStamped::SharedPtr msg);
+        void updateRoboCoords(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
         // 1.2.2
         //rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_sub_;
         
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
+        rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr camera_location_sub_;
+        rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr robo_location_sub_;
         rclcpp::TimerBase::SharedPtr pub_timer_;
         rclcpp::TimerBase::SharedPtr compute_timer_;
 
@@ -38,15 +43,18 @@ class Sequence_generator_node : public rclcpp::Node
         float x0_ = 0.0;
         float theta_zf_;
         float xf_;
-        float pix_x0_;
-        float pix_y0_;
-        float pub_freq_ = 30.0;
-        float final_time = 6.0; // seconds
+        float pix_x0_ = 320;
+        float pix_y0_ = 180;
         float dt = 0.3; // seconds, equal to time constant of 1st order system
-        size_t buffer_size = 10; // buffer size for twist buffer to be published
+        float pub_freq_ = 1.0 / dt; // Hz
+        float compute_freq_ = (1.0/3.0) * pub_freq_; // Hz
+        float final_time = 2.1; // seconds
+        int zeroTwistCounter = 0;
+        int bufferTwistCounter = 0;
+        
+        size_t buffer_size = 4; // buffer size for twist buffer to be published
         geometry_msgs::msg::Twist zero_twist;
         std::vector<geometry_msgs::msg::Twist> twist_buffer;
-
 };
 
 #endif // SEQUENCE_GENERATOR_HPP

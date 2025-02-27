@@ -47,12 +47,13 @@ class Sequence_generator_node : public rclcpp::Node
         float pix_y0_ = 180;
         float dt = 0.3; // seconds, equal to time constant of 1st order system
         float pub_freq_ = 1.0 / dt; // Hz
-        float compute_freq_ = (1.0/3.0) * pub_freq_; // Hz
-        float final_time = 2.1; // seconds
+        int pub_to_compute_factor = 3;
+        float compute_freq_ = (1.0 / pub_to_compute_factor) * pub_freq_; // Hz
+        float final_time = 30; // seconds
         int zeroTwistCounter = 0;
         int bufferTwistCounter = 0;
         
-        size_t buffer_size = 4; // buffer size for twist buffer to be published
+        size_t buffer_size = 100;//pub_to_compute_factor + 1; // buffer size for twist buffer to be published
         geometry_msgs::msg::Twist zero_twist;
         std::vector<geometry_msgs::msg::Twist> twist_buffer;
 };

@@ -19,7 +19,7 @@ class Sequence_generator_node : public rclcpp::Node
         void parse_parameters();
         void absolute(float &delta_x);
         float power(float base, float exponent);
-        std::array<float,2> desiredPose();
+        void desiredPose();
         std::array<float,4> getCoefficients(float final_time, float ini_q, float final_q);
         void Sequence_generator();
         void publisherCallback();       
@@ -30,6 +30,7 @@ class Sequence_generator_node : public rclcpp::Node
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
         rclcpp::TimerBase::SharedPtr pub_timer_;
         rclcpp::TimerBase::SharedPtr compute_timer_;
+        rclcpp::Time init_time_;
 
         geometry_msgs::msg::Point desired_point;
         const geometry_msgs::msg::Point::SharedPtr desired_point_pointer = std::make_shared<geometry_msgs::msg::Point>(desired_point); 
@@ -38,15 +39,13 @@ class Sequence_generator_node : public rclcpp::Node
         float x0_ = 0.0;
         float theta_zf_;
         float xf_;
-        float pix_x0_;
-        float pix_y0_;
-        float pub_freq_ = 30.0;
-        float final_time = 6.0; // seconds
+        float pix_x0_ = 320.0;
+        float pix_y0_ = 180.0;
+        float pub_freq_;
+        float final_time = 11.4; // seconds
         float dt = 0.3; // seconds, equal to time constant of 1st order system
-        size_t buffer_size = 10; // buffer size for twist buffer to be published
         geometry_msgs::msg::Twist zero_twist;
         std::vector<geometry_msgs::msg::Twist> twist_buffer;
-
 };
 
 #endif // SEQUENCE_GENERATOR_HPP

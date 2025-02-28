@@ -17,10 +17,12 @@ void Brightness::initialize(){
 
 void Brightness::avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg)
 {
+    // convert ROS image message to OpenCV image
     cv_bridge::CvImageConstPtr cvimage_ptr;
     cvimage_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::RGB8);
     cv::Mat image = cvimage_ptr->image;
 
+    // loops through all pixels in the image and calculates average brightness through RGB values
     cv::Vec3b rgb;
     unsigned int red, green, blue;
     float rgb_tot = 0.0;
@@ -35,9 +37,11 @@ void Brightness::avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg)
             rgb_tot += (red + green + blue) / 3;
         }
     }
-
+    // calculates average brightness of the image and prints it
     float brightness = rgb_tot / (image.rows * image.cols);
-    // Added get parameter to ensure latest value brightness threshold value is used
+    RCLCPP_INFO(get_logger(), "Brightness: %f", brightness);
+
+    // added get parameter to ensure latest brightness threshold value is used
     brightness_threshold = this->get_parameter("brightness_threshold").as_int();
     if (brightness > brightness_threshold)
     {
@@ -48,6 +52,7 @@ void Brightness::avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg)
         is_light_on = false;
     }
     
+    // logs and publishes whether the light is on or off
     RCLCPP_INFO(get_logger(), "Light is %s", is_light_on ? "on" : "off");
     std_msgs::msg::Bool light_msg;
     light_msg.data = is_light_on;

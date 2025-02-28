@@ -19,14 +19,18 @@ class Sequence_generator_node : public rclcpp::Node
     private:
         void initialize();
         void parse_parameters();
+        void updateCameraCoords(const geometry_msgs::msg::PointStamped::SharedPtr camPosMsg);
         void publisherCallback();       
         
+        rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr camera_location_sub_;
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
         rclcpp::TimerBase::SharedPtr pub_timer_;
 
         rclcpp::Time init_time;
         size_t depth_;
         float twist_strength_;
+        float pix_x0_;
+        float pix_y0_;
         geometry_msgs::msg::Twist random_twist;
 };
 

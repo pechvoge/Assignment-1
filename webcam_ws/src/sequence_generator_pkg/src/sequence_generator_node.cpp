@@ -10,6 +10,7 @@ Sequence_generator_node::Sequence_generator_node(const rclcpp::NodeOptions &opti
 void Sequence_generator_node::initialize()
 {
     auto qos = rclcpp::QoS(depth_);
+    camera_location_sub_ = this->create_subscription<geometry_msgs::msg::PointStamped>("/output/camera_position", qos, std::bind(&Sequence_generator_node::updateCameraCoords, this, std::placeholders::_1));
     twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/input/twist", qos);
 
     random_twist.linear.x = 0.0;
@@ -24,6 +25,13 @@ void Sequence_generator_node::initialize()
     pub_timer_ = this->create_wall_timer(
         std::chrono::milliseconds(static_cast<int>(500.0)),
         std::bind(&Sequence_generator_node::publisherCallback, this));
+}
+
+void Sequence_generator_node::updateCameraCoords(const geometry_msgs::msg::PointStamped::SharedPtr camPosMsg)
+{
+    pix_x0_ = camPosMsg->point.x;
+    pix_y0_ = camPosMsg->point.y;
+    //RCLCPP_INFO(get_logger(), "Camera x: %f, Camera y: %f", pix_x0_, pix_y0_);
 }
 
 void Sequence_generator_node::publisherCallback()
@@ -47,6 +55,7 @@ void Sequence_generator_node::publisherCallback()
     } else 
     {
         random_twist.angular.z = 0.0;
+        init_time += rclcpp::Duration::from_seconds(20);
     }
     twist_pub_->publish(random_twist);
     RCLCPP_INFO(this->get_logger(), "Publishing twist: %f, %f", random_twist.linear.x, random_twist.angular.z);

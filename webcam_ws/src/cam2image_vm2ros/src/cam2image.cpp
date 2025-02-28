@@ -116,7 +116,7 @@ namespace cam2image_vm2ros
     header.stamp = this->now();
     auto msg = cv_bridge::CvImage(header, "bgr8", frame).toImageMsg();
 
-    RCLCPP_INFO(get_logger(), "Publishing image #%zd", publish_number_++);
+    //RCLCPP_INFO(get_logger(), "Publishing image #%zd", publish_number_++);
     pub_->publish(*msg);
   }
 

@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="cam2image_vm2ros" exec="cam2image" name="cam2image" args="--ros-args --params-file src/cam2image_vm2ros/config/cam2image.yaml"/>
+    <node pkg="relbot_simulator" exec="relbot_simulator" name="relbot_simulator" args="--ros-args -p use_twist_cmd:=true"/>
+    <node pkg="sequence_generator_pkg" exec="sequence_generator_node" name="sequence_generator_node"/>
+</launch>

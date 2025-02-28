@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>sequence_generator_pkg</name>
+  <name>brightness_pkg</name>
   <version>0.0.0</version>
-  <description>Sequence generator package</description>
+  <description>Package that determines brightness of webcam image</description>
   <maintainer email="l.dijkman@student.utwente.nl">Luuk Dijkman</maintainer>
   <license>Apache-2.0</license>
   <author email="j.j.p.oudijk@student.utwente.nl">Jesse Oudijk</author>
@@ -13,7 +13,9 @@
 
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
-  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>libopencv-dev</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

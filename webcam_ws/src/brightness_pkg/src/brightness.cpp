@@ -1,4 +1,4 @@
-#include "brightness.hpp"
+#include "brightness_pkg/brightness.hpp"
 
 Brightness::Brightness(const rclcpp::NodeOptions &options)
     : Node("brightness", options)

@@ -31,13 +31,13 @@ void Object_detection_node::CoG_determiner(const sensor_msgs::msg::Image::Shared
     CoG.y = mom.m01 / mom.m00;
     CoG.z = 0;
     CoG_pub_->publish(CoG);
-    RCLCPP_INFO(get_logger(), "CoG is at (%f, %f)", CoG.x, CoG.y);
+    //RCLCPP_INFO(get_logger(), "CoG is at (%f, %f)", CoG.x, CoG.y);
     cv::imshow("object", thresholded_image);
     cv::waitKey(1);
 }
 
 void Object_detection_node::parse_parameters()
 {   
-    gray_threshold_ = this->declare_parameter("gray_threshold", 100);
+    gray_threshold_ = this->declare_parameter("gray_threshold", 240);
     depth_ = this->declare_parameter("depth", 10);
 }

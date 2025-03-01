@@ -19,10 +19,14 @@ class Sequence_generator_node : public rclcpp::Node
     private:
         void initialize();
         void parse_parameters();
+        void absolute(float &delta_x);
         void updateCameraCoords(const geometry_msgs::msg::PointStamped::SharedPtr camPosMsg);
+        void updateDesiredPoint(const geometry_msgs::msg::Point::SharedPtr CoGMsg);
+        void sequenceController();
         void publisherCallback();       
         
         rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr camera_location_sub_;
+        rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr CoG_sub_;
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
         rclcpp::TimerBase::SharedPtr pub_timer_;
 
@@ -31,7 +35,14 @@ class Sequence_generator_node : public rclcpp::Node
         float twist_strength_;
         float pix_x0_;
         float pix_y0_;
+        float desired_point_x;
+        float desired_point_y;
         geometry_msgs::msg::Twist random_twist;
+        bool assignment_selecter_;
+        float dt_;
+        float scaling_factor_theta_;
+        float scaling_factor_x_;
+        const float pix_offset_y = 5.0;
 };
 
 #endif // SEQUENCE_GENERATOR_HPP

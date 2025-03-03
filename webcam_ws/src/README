@@ -1,0 +1,46 @@
+Assignment 1.1.2 + 1.1.3
+----------------------------------------
+1. Open 2 ubuntu + 1 powershell terminals, in the powershell run
+    python .\cam2image_host2vm\videoserver.python
+
+    In the first ubuntu terminal, run
+    ros2 run ros2 run cam2image_vm2ros cam2image--ros-args --params-file src/cam2image_vm2ros/config/cam2image.yaml
+
+    In the second ubuntu terminal, run
+    ros2 run brightness_pkg brightness
+
+    Then open another ubuntu terminal and run e.g.
+    ros2 param set brightness brightness_threshold 100
+
+Assignment 1.1.4
+----------------------------------------
+1. Open 2 ubuntu + 1 powershell terminals, in the powershell run
+    python .\cam2image_host2vm\videoserver.python
+
+    In the first ubuntu terminal, run
+    ros2 run ros2 run cam2image_vm2ros cam2image--ros-args --params-file src/cam2image_vm2ros/config/cam2image.yaml
+
+    In the second ubuntu terminal, run
+    ros2 run object_detection_pkg object_detection_node
+
+Assignment 1.2.1
+----------------------------------------
+1. Open sequence_generator_pkg/src/sequence_generator_node.cpp
+    In the parse_parameters() function, change assignment_selecter to false
+
+    Open 1 ubuntu + 1 powershell terminals, in the powershell run
+    python .\cam2image_host2vm\videoserver.python
+
+    In the ubuntu terminal, run 
+    ros2 run sequence_generator_pkg sequence_generator_launch.xml
+
+Assignment 1.2.2
+----------------------------------------
+1. Open sequence_generator_pkg/src/sequence_generator_node.cpp
+    In the parse_parameters() function, change assignment_selecter to true
+
+    Open 1 ubuntu + 1 powershell terminals, in the powershell run
+    python .\cam2image_host2vm\videoserver.python
+
+    In the ubuntu terminal, run 
+    ros2 run sequence_generator_pkg sequence_generator_launch.xml

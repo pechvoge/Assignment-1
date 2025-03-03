@@ -1,0 +1,31 @@
+Package sequence_generator_pkg
+---------------------------------------
+Description: The node inside this package generates sequences of twists setpoints based on the CoG of the bright object in the camera frame
+and the relbot simulator and publishes them.
+Inputs: 
+/CoG
+    Type: geometry_msgs/msg/Point
+/output/camera_position
+    Type: geometry_msgs/msg/PointStamped
+
+Outputs:
+/input/twist
+    Type: geometry_msgs/msg/Twist
+
+Run:
+    In a terminal, run the following command in the cam2image_host2vm directory:
+    python videoserver.py
+    In a ubuntu terminal, run the following command in webcam_ws:
+    ros2 launch sequence_generator_pkg sequence_generator_launch.xml
+
+Parameters:
+    depth_ : sets the queue size of the publisher/subscriber, Default = 10
+    twist_strength_ : sets the twist strength in m/s or rad/s depending on linear or angular, Default =1.0
+    assignment_selecter_ : sets the assignment 1.2.1(false) or 1.2.2(true), Default = true
+    dt_ : sets the time interval for the sequence generation, Default = 1.0
+    scaling_factor_theta_ : scales difference in x- pixel coordinates to angular velocity, Default = 0.01
+    scaling_factor_x_ : scales difference in y- pixel coordinates to linear velocity, Default = 0.3
+
+Core components:
+    sequenceController() : determines difference between CoG and subimage pixel coordinates and determines and publishes twist setpoints
+    publisherCallback() : publishes a 20 seconds sequence of positive and negative linear x and angular z direction twists.

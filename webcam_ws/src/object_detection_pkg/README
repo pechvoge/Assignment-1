@@ -1,0 +1,21 @@
+Package object_detection_pkg
+---------------------------------------
+Description: The node inside this package determines the center of gravity of a bright object inside an image.
+
+Inputs: 
+\image
+    Type: sensor_msgs/msg/Image
+
+Outputs:
+\CoG
+    Type: geometry_msgs/msg/Point
+
+Run:
+    ros2 run object_detection_pkg object_detection_node
+
+Parameters:
+    depth: Sets the que size of the publisher/subscriber, Default = 10
+    gray_threshold: Determines the threshold for a pixel to be considered bright, Default = 240
+
+Core components:
+    CoG_determiner(const sensor_msgs::msg::Image::SharedPtr msg): Determines the CoG of a ros image

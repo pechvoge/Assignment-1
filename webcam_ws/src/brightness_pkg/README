@@ -1,0 +1,21 @@
+Package brightness_pkg
+---------------------------------------
+Description: The node inside this package determines the average brightness of an image to be able to determine if a light is on or off.
+
+Inputs: 
+\image
+    Type: sensor_msgs/msg/Image
+
+Outputs:
+\light
+    Type: std_msgs/msg/Bool
+
+Run:
+    ros2 run brightness_pkg brightness
+
+Parameters:
+    depth: Sets the que size of the publisher/subscriber, Default = 10
+    brightness_threshold: Sets the threshold for the average brightness of the image which determines whether the light is on or off, Default = 100 
+
+Core components:
+    avg_brightness(const sensor_msgs::msg::Image::SharedPtr msg): Determines the average brightness of an image and publishes whether the light is on or off
